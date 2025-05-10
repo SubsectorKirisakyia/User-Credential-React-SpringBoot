@@ -12,15 +12,18 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
 import com.arcyriea.usersecuritypractice.security.CustomUserDetailService;
 
 @Configuration
 @EnableWebSecurity
-public class SecurityConfig {
+public class SecurityConfig implements WebMvcConfigurer{
 
 
-        @Autowired
-        private CustomUserDetailService userDetailService;
+    @Autowired
+    private CustomUserDetailService userDetailService;
 
 
     @Bean
@@ -62,4 +65,14 @@ public class SecurityConfig {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**")
+        .allowedOrigins("http://localhost:8080/", "http://localhost:5173/")
+        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+        .allowedHeaders("*") //Have to put it this way since I don't know the exact headers to use for this yet.
+        .allowCredentials(true);
+	}
+    
 }
