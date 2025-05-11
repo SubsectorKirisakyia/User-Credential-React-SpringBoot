@@ -10,7 +10,7 @@ import com.arcyriea.usersecuritypractice.entity.Account;
 
 public interface AccountRepository extends JpaRepository<Account, Long>{
 
-    @Query("SELECT u FROM Account u WHERE u.email = :email")
+    @Query("SELECT a FROM Account a WHERE a.email = :email")
     Optional<Account> findByEmail(@Param("email") String email);
     
 }
