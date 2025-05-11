@@ -1,8 +1,9 @@
 package com.arcyriea.usersecuritypractice.database;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import lombok.RequiredArgsConstructor;
@@ -13,10 +14,11 @@ import lombok.RequiredArgsConstructor;
 public class DataInitializer implements CommandLineRunner {
 
     private final JdbcTemplate jdbcTemplate;
+    @Autowired
+    private PasswordEncoder encoder;
     
     @Override
     public void run(String... args) throws Exception {
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         try {
             String password = "88888888";
             jdbcTemplate.execute("INSERT INTO users (email, password)\r\n" + //
