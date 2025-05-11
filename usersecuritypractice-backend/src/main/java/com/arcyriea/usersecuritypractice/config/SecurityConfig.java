@@ -10,6 +10,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 // import org.springframework.security.core.userdetails.UserDetailsService;
 // import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.filter.CorsFilter;
 
 import com.arcyriea.usersecuritypractice.security.CustomUserDetailService;
 
@@ -21,10 +23,13 @@ public class SecurityConfig{
     @Autowired
     private CustomUserDetailService userDetailService;
 
+    @Autowired
+    private CorsFilter corsFilter;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
+        http    
+                .addFilterBefore(corsFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/admin/**").authenticated() //denyAll() would cause WhiteLabel page error with a 403, and that's normal.
                         .requestMatchers("/user/**").permitAll()
