@@ -36,3 +36,6 @@ out/
 ### VS Code ###
 .vscode/
 .vs/
+
+### Lock Files ###
+usersecuritypractice-backend/application_initialized.lock
