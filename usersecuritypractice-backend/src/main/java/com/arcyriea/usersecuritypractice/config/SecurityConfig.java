@@ -24,7 +24,6 @@ import com.arcyriea.usersecuritypractice.security.CustomUserDetailService;
 @EnableWebSecurity
 public class SecurityConfig{
 
-
     @Autowired
     private CustomUserDetailService userDetailsService;
     @Autowired
@@ -49,12 +48,6 @@ public class SecurityConfig{
                         .requestMatchers("/register", "/login").permitAll()
                         .anyRequest().authenticated() // Optionally add this to secure other endpoints by default
                 )
-                // .formLogin(form -> form
-                //         .loginProcessingUrl("/login") 
-                //         .usernameParameter("email")
-                //         .passwordParameter("password")
-                //         // You can configure form login details here if needed
-                // )
                 .httpBasic(Customizer.withDefaults()
                         // You can configure HTTP Basic details here if needed
                 )
@@ -64,11 +57,6 @@ public class SecurityConfig{
         return http.build();
     }
 
-//     @Bean
-//     public UserDetailsService userDetailsService(){
-        
-//     }
-
     @Bean
     public DaoAuthenticationProvider authenticationProvider(){
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
@@ -76,21 +64,5 @@ public class SecurityConfig{
         authProvider.setUserDetailsService(userDetailsService);
         return authProvider;
     }
-//     @Bean
-//     public UserDetailsService userDetailsService(PasswordEncoder passwordEncoder) {
-//         UserDetails bushan = User.builder()
-//                 .username("bushan")
-//                 .password(passwordEncoder.encode("12345"))  // Use a proper encoder!
-//                 .roles("ADMIN")
-//                 .build();
-//         UserDetails pavan = User.builder()
-//                 .username("pavan")
-//                 .password(passwordEncoder.encode("12345"))  // Use a proper encoder!
-//                 .roles("USER")
-//                 .build();
-//         return new InMemoryUserDetailsManager(bushan, pavan);
-//     } // for inmemory user creation
-
-    
     
 }
