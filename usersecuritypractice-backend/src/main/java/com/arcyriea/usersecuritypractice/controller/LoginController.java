@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.arcyriea.usersecuritypractice.entity.Account;
 import com.arcyriea.usersecuritypractice.model.UserModel;
 import com.arcyriea.usersecuritypractice.repository.AccountRepository;
+import com.arcyriea.usersecuritypractice.security.JWTService;
 
 @RestController
 public class LoginController {
@@ -27,6 +28,9 @@ public class LoginController {
 
     @Autowired
     private AuthenticationManager authenticationManager;
+
+    @Autowired
+    private JWTService jwtService;
 
     @PostMapping("/register")
     public ResponseEntity<Object> registerAccount(@RequestBody UserModel userModel) {
@@ -46,18 +50,21 @@ public class LoginController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<HttpStatus> login(@RequestBody UserModel userModel) throws Exception{
+    public ResponseEntity<String> login(@RequestBody UserModel userModel) throws Exception{
         Authentication authentication;
         try {
             authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(userModel.getEmail(), userModel.getPassword()));
                 SecurityContextHolder.getContext().setAuthentication(authentication);
-                
+            if (authentication.isAuthenticated()){
+                String key = jwtService.generateToken(userModel.getEmail());
+                return new ResponseEntity<String>("Login Successful: "+key, HttpStatus.OK);
+            }
         } catch (BadCredentialsException e) {
-            return new ResponseEntity<HttpStatus>(HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<String>("Incorrect Username or Password", HttpStatus.UNAUTHORIZED);
         } catch (Exception e){
-            throw new Exception("Potential problem with login method operation: " + e.getMessage());
+            throw new Exception("Potential problem with login method operation");
         }
-        return new ResponseEntity<HttpStatus>(HttpStatus.OK);
+        return new ResponseEntity<String>("Technical problem with login method, please try again at another time", HttpStatus.BAD_REQUEST);
     }
 }
