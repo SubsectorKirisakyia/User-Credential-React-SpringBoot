@@ -3,7 +3,6 @@ package com.arcyriea.usersecuritypractice.database;
 import java.io.File;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
@@ -16,7 +15,7 @@ import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor
-public class DataInitializer implements CommandLineRunner {
+public class DataInitializer {
 
     private static final String INITIALIZED_FILE = "application_initialized.lock";
     @Autowired
@@ -24,11 +23,6 @@ public class DataInitializer implements CommandLineRunner {
     // private final JdbcTemplate jdbcTemplate;
     @Autowired
     private PasswordEncoder encoder;
-    
-    @Override
-    public void run(String... args) throws Exception {
-        
-    }
     
     @PostConstruct
     public void initialize(){
@@ -51,9 +45,9 @@ public class DataInitializer implements CommandLineRunner {
             userRepository.save(user1);
             userRepository.save(user2);
             initializedFile.createNewFile();
-        } catch (Exception e) {
-           System.err.println(e.getMessage());
-        }
+            } catch (Exception e) {
+                System.err.println(e.getMessage());
+            }
         } else {
             System.out.println("Application's Database data already initialized");
         }

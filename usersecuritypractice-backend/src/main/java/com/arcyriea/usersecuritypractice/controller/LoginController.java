@@ -63,8 +63,8 @@ public class LoginController {
         } catch (BadCredentialsException e) {
             return new ResponseEntity<String>("Incorrect Username or Password", HttpStatus.UNAUTHORIZED);
         } catch (Exception e){
-            throw new Exception("Potential problem with login method operation");
+            return new ResponseEntity<String>("Technical problem with login method, please try again at another time", HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return new ResponseEntity<String>("Technical problem with login method, please try again at another time", HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<String>("Login not resolved", HttpStatus.NOT_IMPLEMENTED); 
     }
 }
